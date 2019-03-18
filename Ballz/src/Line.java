@@ -20,9 +20,9 @@ public class Line {
 	public void mouse(int x, int y) {
 		mouseX = x - 20;
 		mouseY = y - 55;
-		if (mouseY > 885)
-			mouseY = 885;
-		angle = 180.0 - (Math.toDegrees(Math.atan((mouseX - 340.0) / (900.0 - mouseY))) + 90.0);
+		if (mouseY > 785)
+			mouseY = 785;
+		angle = 180.0 - (Math.toDegrees(Math.atan((mouseX - 340.0) / (800.0 - mouseY))) + 90.0);
 	}
 
 	public void draw(Graphics g) {
