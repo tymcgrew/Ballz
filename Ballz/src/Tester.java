@@ -20,19 +20,19 @@ public class Tester extends JPanel {
 	JFrame window = new JFrame("BALLZ");
 	Timer tmr = null;
 	Random rnd = new Random();	
-	
+
 	ArrayList<Block> blocks = new ArrayList<>();
 	ArrayList<Ball> balls = new ArrayList<>();
 	Line line = new Line();
 	Block levelBlock = new Block(6,0,0);
-	
+
 	boolean waiting = true;
 	int ballsLeft;
 	int level = 1;
 	int counter = 0;
 
 	public Tester() {
-		
+
 		window.setBounds(460, 0, 720, 900);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.getContentPane().add(this);
@@ -55,7 +55,7 @@ public class Tester extends JPanel {
 							ballsLeft--;
 						}
 						else
-						counter++;
+							counter++;
 					}
 					else if (ballsLeft == 0 && balls.size() == 0) {
 						nextLevel();
@@ -102,16 +102,16 @@ public class Tester extends JPanel {
 			public void mousePressed(MouseEvent e) {
 				if (waiting) {
 					tmr.stop();
-			        tmr.setDelay( 15 );
-			        tmr.start();
+					tmr.setDelay( 15 );
+					tmr.start();
 					waiting = false;
 					balls.add(new Ball(line.angle));
 					ballsLeft = level - 1;
 				}
 				else {
 					tmr.stop();
-			        tmr.setDelay( 5 );
-			        tmr.start();
+					tmr.setDelay( 5 );
+					tmr.start();
 				}
 			}
 
@@ -184,7 +184,7 @@ public class Tester extends JPanel {
 
 		for (Block block : blocks)
 			block.draw(g);
-		
+
 		for (Ball ball : balls)
 			ball.draw(g);
 
