@@ -17,35 +17,32 @@ import javax.swing.Timer;
 
 public class Tester extends JPanel {
 
-	JFrame window = new JFrame("Title");
+	JFrame window = new JFrame("BALLZ");
 	Timer tmr = null;
 	Random rnd = new Random();	
+	
 	ArrayList<Block> blocks = new ArrayList<>();
 	ArrayList<Ball> balls = new ArrayList<>();
-	boolean waiting = true;
 	Line line = new Line();
+	Block levelBlock = new Block(7,0,0);
+	
+	boolean waiting = true;
+	boolean fast = false;
 	long startTime;
 	int ballsLeft;
-	boolean fast = false;
 	int level = 1;
-	Block levelBlock = new Block(7,0,0);
-
-
 
 	public Tester() {
+		
 		window.setBounds(460, 0, 720, 1000);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.getContentPane().add(this);
-		window.setAlwaysOnTop(true);
 		window.setVisible(true);
 
-
-
 		for (int j = 0; j < 7; j++) {
-			if (rnd.nextBoolean())
-				blocks.add(new Block(0,j,level));
+			if (rnd.nextBoolean())                // Add random blocks to top row for level 1
+				blocks.add(new Block(0,j,level)); // Pass row, column, and current level
 		}
-
 
 		//======================================== Events		
 		tmr = new Timer(15, new ActionListener() {
@@ -64,25 +61,21 @@ public class Tester extends JPanel {
 							ballsLeft--;
 						}
 					}
-					if (ballsLeft == 0 && balls.size() == 0) {
+					else if (ballsLeft == 0 && balls.size() == 0) {
 						nextLevel();
 					}
 					for (int i = balls.size()-1; i >= 0; i--) {
 						Ball ball = balls.get(i);
 						if (ball.move(fast)) {
-							balls.remove(ball);
+							balls.remove(ball); 		// If Ball.move() returns true, the ball has left the bottom of the screen
 						}
 						else {
 							for (Block block : blocks) {
-
 								if (block.intersects(ball)) {
-
 									if (block.bounce(ball)) 
-										blocks.remove(block);
+										blocks.remove(block); // If Block.move() returns true, the block's value is 0
 									break;	
-
 								}
-
 							}
 						}
 					}
@@ -94,7 +87,7 @@ public class Tester extends JPanel {
 				level++;
 				waiting = true;
 				for (Block block : blocks) {
-					if (block.descend()) {
+					if (block.descend()) {    // If Block.descend() returns true, the block has reached the bottom of the screen
 						repaint();
 						tmr.stop();
 						JOptionPane.showOptionDialog(window, "Level Reached: " + --level, "Game Over", JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE, null, new Object[]{}, null);					
@@ -103,7 +96,7 @@ public class Tester extends JPanel {
 				}
 				for (int j = 0; j < 7; j++) {
 					if (rnd.nextBoolean())
-						blocks.add(new Block(0,j,level));
+						blocks.add(new Block(0,j,level)); // Pass row, column, current level
 				}
 			}
 		});
@@ -147,7 +140,7 @@ public class Tester extends JPanel {
 		window.addMouseMotionListener(new MouseMotionListener() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				if (waiting)
+				if (waiting || ballsLeft == 0)                 // Don't change the balls' launch angle after they have been launched!!
 					line.mouse(e.getX(), e.getY());
 			}
 
@@ -188,22 +181,18 @@ public class Tester extends JPanel {
 		g.setFont(f);
 
 		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, 700, 1000);
-
+		g.fillRect(0, 0, 700, 1000);  // Fill black background
 
 		for (Block block : blocks)
-		{
 			block.draw(g);
-		}
+		
 		for (Ball ball : balls)
-		{
 			ball.draw(g);
-		}
 
-		if (waiting)
+		if (waiting)                  // Don't draw line when balls are moving
 			line.draw(g);
 
-		Font f2 = new Font("Dialog", Font.BOLD, 48);
+		Font f2 = new Font("Dialog", Font.BOLD, 48); 			// Larger font for current level and balls left
 		g.setFont(f2);
 		levelBlock.drawLevelBlock(g, level);
 		if (!waiting && ballsLeft > 0)

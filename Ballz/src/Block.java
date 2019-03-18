@@ -3,7 +3,9 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Random;
-
+/*
+ * Class for the blocks on the map, includes a special method for the invisible score block in the bottom left
+ */
 public class Block extends Rectangle 
 {
 
@@ -81,25 +83,31 @@ public class Block extends Rectangle
 		
 		double min = Math.min(Math.min(leftDist, rightDist), Math.min(topDist, bottomDist));
 		
-		if (min == leftDist) {
-			ball.x = this.x - ball.width;
+		if (min == bottomDist) {
+			ball.yDouble = this.y + this.height + 1;
+			ball.y = (int) ball.yDouble;
+			ball.ySpeed = -ball.ySpeed;
+		}
+		
+		else if (min == leftDist) {
+			ball.xDouble = this.x - ball.width - 1;
+			ball.x = (int) ball.xDouble;
 			ball.xSpeed = -ball.xSpeed;
 		}
 		
 		else if (min == rightDist) {
-			ball.x = this.x + this.width;
+			ball.xDouble = this.x + this.width + 1;
+			ball.x = (int) ball.xDouble;
 			ball.xSpeed = -ball.xSpeed;
 		}
 		
 		else if (min == topDist) {
-			ball.y = this.y - ball.height;
+			ball.yDouble = this.y - ball.height - 1;
+			ball.y = (int) ball.yDouble;
 			ball.ySpeed = -ball.ySpeed;   
 		}
 		
-		else {
-			ball.y = this.y + this.height;
-			ball.ySpeed = -ball.ySpeed;
-		}
+		
 		
 		value--;
 		return value == 0;

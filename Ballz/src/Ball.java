@@ -1,7 +1,9 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-
+/*
+ * Class for a ball that bounces around the game
+ */
 public class Ball extends Rectangle {
 
 	public double xSpeed, ySpeed;

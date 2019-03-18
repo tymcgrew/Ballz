@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.Graphics;
-
+/*
+ * Class for the dotted line that the user uses to aim and shoot
+ */
 public class Line {
 
 	int startX, startY, endX, endY;
@@ -30,8 +32,10 @@ public class Line {
 		g.setColor(color);
 		g.fillOval(startX, startY, width, height);
 
-		g.fillOval((int)(0.33 * (mouseX-startX) + startX), (int)(0.33 * (mouseY-startY) + startY), width, height);
-		g.fillOval((int)(0.67 * (mouseX-startX) + startX), (int)(0.67 * (mouseY-startY) + startY), width, height);
+		g.fillOval((int)(0.2 * (mouseX-startX) + startX), (int)(0.2 * (mouseY-startY) + startY), width, height);
+		g.fillOval((int)(0.4 * (mouseX-startX) + startX), (int)(0.4 * (mouseY-startY) + startY), width, height);
+		g.fillOval((int)(0.6 * (mouseX-startX) + startX), (int)(0.6 * (mouseY-startY) + startY), width, height);
+		g.fillOval((int)(0.8 * (mouseX-startX) + startX), (int)(0.8 * (mouseY-startY) + startY), width, height);
 
 		g.fillOval(mouseX, mouseY, width, height);
 	}
