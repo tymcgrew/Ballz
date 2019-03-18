@@ -12,7 +12,7 @@ public class Line {
 
 	public Line() {
 		startX = 340;
-		startY = 900;
+		startY = 800;
 		angle = 90;
 		color = Color.WHITE;
 	}

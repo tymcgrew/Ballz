@@ -118,7 +118,7 @@ public class Block extends Rectangle
 	public boolean descend() {
 		row++;
 		setPos();
-		return row >= 7;
+		return row >= 6;
 	}
 
 	public void drawLevelBlock(Graphics g, int level) {

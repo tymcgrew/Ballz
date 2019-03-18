@@ -24,17 +24,16 @@ public class Tester extends JPanel {
 	ArrayList<Block> blocks = new ArrayList<>();
 	ArrayList<Ball> balls = new ArrayList<>();
 	Line line = new Line();
-	Block levelBlock = new Block(7,0,0);
+	Block levelBlock = new Block(6,0,0);
 	
 	boolean waiting = true;
-	boolean fast = false;
-	long startTime;
 	int ballsLeft;
 	int level = 1;
+	int counter = 0;
 
 	public Tester() {
 		
-		window.setBounds(460, 0, 720, 1000);
+		window.setBounds(460, 0, 720, 900);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.getContentPane().add(this);
 		window.setVisible(true);
@@ -44,29 +43,26 @@ public class Tester extends JPanel {
 				blocks.add(new Block(0,j,level)); // Pass row, column, and current level
 		}
 
-		//======================================== Events		
+		//======================================== Events
 		tmr = new Timer(15, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!waiting) {
 					if (ballsLeft > 0) {
-						if (fast && System.currentTimeMillis() - startTime > 67) {
-							balls.add(new Ball(line.angle, fast));
-							startTime = System.currentTimeMillis();
+						if (counter > 12) {
+							balls.add(new Ball(line.angle));
+							counter = 0;
 							ballsLeft--;
 						}
-						else if (!fast && System.currentTimeMillis() - startTime > 200) {
-							balls.add(new Ball(line.angle, fast));
-							startTime = System.currentTimeMillis();
-							ballsLeft--;
-						}
+						else
+						counter++;
 					}
 					else if (ballsLeft == 0 && balls.size() == 0) {
 						nextLevel();
 					}
 					for (int i = balls.size()-1; i >= 0; i--) {
 						Ball ball = balls.get(i);
-						if (ball.move(fast)) {
+						if (ball.move()) {
 							balls.remove(ball); 		// If Ball.move() returns true, the ball has left the bottom of the screen
 						}
 						else {
@@ -105,14 +101,17 @@ public class Tester extends JPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (waiting) {
-					fast = false;
+					tmr.stop();
+			        tmr.setDelay( 15 );
+			        tmr.start();
 					waiting = false;
-					balls.add(new Ball(line.angle, fast));
-					startTime = System.currentTimeMillis();
+					balls.add(new Ball(line.angle));
 					ballsLeft = level - 1;
 				}
 				else {
-					fast = true;
+					tmr.stop();
+			        tmr.setDelay( 5 );
+			        tmr.start();
 				}
 			}
 
@@ -181,7 +180,7 @@ public class Tester extends JPanel {
 		g.setFont(f);
 
 		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, 700, 1000);  // Fill black background
+		g.fillRect(0, 0, 700, 900);  // Fill black background
 
 		for (Block block : blocks)
 			block.draw(g);
@@ -196,7 +195,7 @@ public class Tester extends JPanel {
 		g.setFont(f2);
 		levelBlock.drawLevelBlock(g, level);
 		if (!waiting && ballsLeft > 0)
-			g.drawString(Integer.toString(ballsLeft), 340, 900);
+			g.drawString(Integer.toString(ballsLeft), 340, 800);
 
 	}
 
