@@ -100,17 +100,13 @@ public class Tester extends JPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (waiting) {
-					tmr.stop();
 					tmr.setDelay( 15 );
-					tmr.start();
 					waiting = false;
 					balls.add(new Ball(line.angle));
 					ballsLeft = level - 1;
 				}
-				else if (tmr.getDelay() == 15) {
-					tmr.stop();
-					tmr.setDelay( 5 );
-					tmr.start();
+				else if (tmr.getDelay() == 15){
+					tmr.setDelay( 1 );
 				}
 			}
 
